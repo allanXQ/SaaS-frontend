@@ -251,7 +251,7 @@ export default function PlanBasedNav() {
   return (
     <>
       {/* Mobile menu button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+      <div className={`lg:hidden relative top-2 left-4 z-50 mb-5 ${sidebarOpen && 'left-52'}`}>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="p-2 bg-white rounded-lg shadow-lg border"
@@ -261,7 +261,7 @@ export default function PlanBasedNav() {
       </div>
 
       {/* Sidebar */}
-      <div className={`fixed top-0 left-0 h-full bg-white shadow-xl border-r z-30 transition-all duration-300 ease-in-out ${
+      <div className={`fixed top-0 pt-5 left-0 h-full bg-white shadow-xl border-r z-30 transition-all duration-300 ease-in-out ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       } ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
         {/* Desktop collapse/expand button */}
@@ -587,7 +587,7 @@ export default function PlanBasedNav() {
             ) : (
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-500 text-white rounded-lg font-semibold shadow hover:bg-red-600 transition text-xs"
+                className="w-[calc(100%-theme(space.4))] flex items-center justify-center gap-2 px-3 py-2 bg-red-500 text-white rounded-lg font-semibold shadow hover:bg-red-600 transition text-xs mb-2 ml-2"
               >
                 <FaSignOutAlt className="w-4 h-4 flex-shrink-0" />
                 <span>Log out</span>
@@ -600,7 +600,7 @@ export default function PlanBasedNav() {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-white/60 backdrop-blur-sm z-20 lg:hidden"
+          className="fixed inset-0 bg-white/60 backdrop-blur-sm backdrop-opacity-5 z-20 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}

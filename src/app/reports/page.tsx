@@ -479,7 +479,7 @@ export default function ReportsPage() {
 
     // Find low stock products (stock <= 10)
   const LOW_STOCK_THRESHOLD = 10;
-  const lowStockProducts = products.filter(p => (p.stock ?? 0) <= LOW_STOCK_THRESHOLD && (p.stock ?? 0) > 0);
+  const lowStockProducts = Array.isArray(products) ? products.filter(p => (p.stock ?? 0) <= LOW_STOCK_THRESHOLD && (p.stock ?? 0) > 0) : [];
 
   // Show notification alert automatically when low stock detected
   useEffect(() => {
