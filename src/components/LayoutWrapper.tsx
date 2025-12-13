@@ -23,7 +23,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   return (
     <>
       {!isInRouteGroup && <PlanBasedNav />}
-      <main className={`min-h-screen bg-gray-50 transition-all duration-300 ${
+      <main className={`min-h-screen bg-gray-50 transition-all duration-300 sm:relative top-14 lg:top-0${
         !isInRouteGroup
           ? sidebarCollapsed
             ? 'lg:ml-16'
