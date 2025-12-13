@@ -607,17 +607,16 @@ export default function ProductsPage() {
                   />
                 </div>
               <div>
-              </div>
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-0.5">Description</label>
-                <textarea
+                <input
                   name="description"
                   defaultValue={editProduct?.description || ''}
-                  rows={3}
                   className="w-full px-2 py-1.5 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 text-xs"
                 />
               </div>
+              </div>
+
 
               <div className="flex gap-2 pt-1">
                 <button
