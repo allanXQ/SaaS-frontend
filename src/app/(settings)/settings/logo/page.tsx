@@ -247,7 +247,7 @@ export default function LogoSettings() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4 min-h-[80vh]">
+    <div className="mx-auto py-10 px-4 min-h-[80vh]">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <FaImage className="text-blue-600 text-2xl" />
@@ -267,169 +267,172 @@ export default function LogoSettings() {
         </div>
       )}
 
-      {/* Logo Types Tabs */}
-      <div className="bg-white rounded-xl shadow p-8 w-full mb-8">
-        <div className="flex flex-wrap gap-2 mb-6">
-          {Object.entries(logoTypes).map(([key, config]) => (
-            <button
-              key={key}
-              onClick={() => setActiveTab(key)}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                activeTab === key
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {config.label}
-              {config.required && <span className="text-red-500 ml-1">*</span>}
-            </button>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
+        {/* Logo Types Tabs */}
+        <div className="bg-white rounded-xl shadow p-8 w-full">
+          <div className="flex flex-wrap gap-2 mb-6">
+            {Object.entries(logoTypes).map(([key, config]) => (
+              <button
+                key={key}
+                onClick={() => setActiveTab(key)}
+                className={`px-4 py-2 rounded-lg font-medium transition ${
+                  activeTab === key
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {config.label}
+                {config.required && <span className="text-red-500 ml-1">*</span>}
+              </button>
+            ))}
+          </div>
 
-        {/* Active Tab Content */}
-        {Object.entries(logoTypes).map(([key, config]) => (
-          <div key={key} className={activeTab === key ? 'block' : 'hidden'}>
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">{config.label}</h3>
-              <p className="text-gray-600 mb-4">{config.description}</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Upload Section */}
-                <div>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                    <FaUpload className="mx-auto text-3xl text-gray-400 mb-4" />
-                    <p className="text-sm text-gray-600 mb-4">
-                      {config.required ? 'Required' : 'Optional'} • Max {config.maxSize}MB • {config.formats.join(', ')}
-                    </p>
-                    <input
-                      type="file"
-                      accept={config.formats.map(f => `.${f}`).join(',')}
-                      onChange={(e) => handleFileChange(e, key as keyof LogoConfig)}
-                      className="hidden"
-                      id={`file-${key}`}
-                      ref={createInputRef(key)}
-                    />
-                    <label
-                      htmlFor={`file-${key}`}
-                      className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                    >
-                      Choose File
-                    </label>
+          {/* Active Tab Content */}
+          {Object.entries(logoTypes).map(([key, config]) => (
+            <div key={key} className={activeTab === key ? 'block' : 'hidden'}>
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">{config.label}</h3>
+                <p className="text-gray-600 mb-4">{config.description}</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                  {/* Upload Section */}
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-3">Upload</h4>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <FaUpload className="mx-auto text-3xl text-gray-400 mb-4" />
+                      <p className="text-sm text-gray-600 mb-4">
+                        {config.required ? 'Required' : 'Optional'} • Max {config.maxSize}MB • {config.formats.join(', ')}
+                      </p>
+                      <input
+                        type="file"
+                        accept={config.formats.map(f => `.${f}`).join(',')}
+                        onChange={(e) => handleFileChange(e, key as keyof LogoConfig)}
+                        className="hidden"
+                        id={`file-${key}`}
+                        ref={createInputRef(key)}
+                      />
+                      <label
+                        htmlFor={`file-${key}`}
+                        className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                      >
+                        Choose File
+                      </label>
+                    </div>
+
+                    {/* Validation Messages */}
+                    {validation[key] && (
+                      <div className="mt-4">
+                        {validation[key].errors.map((error, index) => (
+                          <div key={index} className="flex items-center gap-2 text-red-600 text-sm mb-1">
+                            <FaExclamationTriangle className="w-4 h-4" />
+                            {error}
+                          </div>
+                        ))}
+                        {validation[key].warnings.map((warning, index) => (
+                          <div key={index} className="flex items-center gap-2 text-yellow-600 text-sm mb-1">
+                            <FaInfoCircle className="w-4 h-4" />
+                            {warning}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
-                  {/* Validation Messages */}
-                  {validation[key] && (
-                    <div className="mt-4">
-                      {validation[key].errors.map((error, index) => (
-                        <div key={index} className="flex items-center gap-2 text-red-600 text-sm mb-1">
-                          <FaExclamationTriangle className="w-4 h-4" />
-                          {error}
-                        </div>
-                      ))}
-                      {validation[key].warnings.map((warning, index) => (
-                        <div key={index} className="flex items-center gap-2 text-yellow-600 text-sm mb-1">
-                          <FaInfoCircle className="w-4 h-4" />
-                          {warning}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Preview Section */}
-                <div>
-                  <h4 className="font-medium text-gray-700 mb-3">Preview</h4>
-                  <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 relative h-40 flex items-center justify-center">
-                    {preview[key] ? (
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={preview[key]}
-                          alt={`${config.label} preview`}
-                          fill
-                          style={{ objectFit: 'contain' }}
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                      </div>
-                    ) : logoConfig[key as keyof LogoConfig] ? (
-                      <div className="text-center">
-                        <div className="relative w-full h-32">
+                  {/* Preview Section */}
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-3">Preview</h4>
+                    <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 relative h-40 flex items-center justify-center">
+                      {preview[key] ? (
+                        <div className="relative w-full h-full">
                           <Image
-                            src={logoConfig[key as keyof LogoConfig] || ''}
-                            alt={`Current ${config.label}`}
+                            src={preview[key]}
+                            alt={`${config.label} preview`}
                             fill
                             style={{ objectFit: 'contain' }}
                             sizes="(max-width: 768px) 100vw, 50vw"
                           />
                         </div>
-                        <button
-                          onClick={() => handleRemoveLogo(key as keyof LogoConfig)}
-                          className="mt-2 text-red-600 hover:text-red-700 text-sm flex items-center gap-1 mx-auto"
-                        >
-                          <FaTrash className="w-3 h-3" />
-                          Remove
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="text-center text-gray-500 py-8">
-                        <FaImage className="mx-auto text-2xl mb-2" />
-                        <p className="text-sm">No {config.label.toLowerCase()} uploaded</p>
-                      </div>
-                    )}
+                      ) : logoConfig[key as keyof LogoConfig] ? (
+                        <div className="text-center">
+                          <div className="relative w-full h-32">
+                            <Image
+                              src={logoConfig[key as keyof LogoConfig] || ''}
+                              alt={`Current ${config.label}`}
+                              fill
+                              style={{ objectFit: 'contain' }}
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                            />
+                          </div>
+                          <button
+                            onClick={() => handleRemoveLogo(key as keyof LogoConfig)}
+                            className="mt-2 text-red-600 hover:text-red-700 text-sm flex items-center gap-1 mx-auto"
+                          >
+                            <FaTrash className="w-3 h-3" />
+                            Remove
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-center text-gray-500 py-8">
+                          <FaImage className="mx-auto text-2xl mb-2" />
+                          <p className="text-sm">No {config.label.toLowerCase()} uploaded</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {/* Upload Button */}
-        <div className="flex justify-end mt-6">
-          <button
-            onClick={handleUpload}
-            disabled={uploading || Object.keys(file).filter(k => file[k]).length === 0}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            <FaUpload className="w-4 h-4" />
-            {uploading ? 'Uploading...' : 'Upload Selected Logos'}
-          </button>
+          {/* Upload Button */}
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={handleUpload}
+              disabled={uploading || Object.keys(file).filter(k => file[k]).length === 0}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              <FaUpload className="w-4 h-4" />
+              {uploading ? 'Uploading...' : 'Upload Selected Logos'}
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Logo Usage Guidelines */}
-      <div className="bg-blue-50 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-blue-800 mb-4">Logo Guidelines</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-700">
-          <div>
-            <h4 className="font-medium mb-2">Main Logo</h4>
-            <ul className="space-y-1">
-              <li>• Used in header, branding, and main UI</li>
-              <li>• Recommended: 200x80px, PNG/SVG preferred</li>
-              <li>• Required for professional appearance</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium mb-2">KRA eTIMS QR Code</h4>
-            <ul className="space-y-1">
-              <li>• Required for Kenya tax compliance</li>
-              <li>• Must be valid QR code from KRA</li>
-              <li>• Used on receipts and invoices</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium mb-2">Receipt Logo</h4>
-            <ul className="space-y-1">
-              <li>• Displayed on receipts and invoices</li>
-              <li>• Should be high contrast for printing</li>
-              <li>• Recommended: 150x60px</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-medium mb-2">Favicon</h4>
-            <ul className="space-y-1">
-              <li>• Small icon for browser tabs</li>
-              <li>• Should be simple and recognizable</li>
-              <li>• Recommended: 32x32px, ICO/PNG</li>
-            </ul>
+        {/* Logo Usage Guidelines */}
+        <div className="bg-blue-50 rounded-xl p-6">
+          <h3 className="text-lg font-semibold text-blue-800 mb-4">Logo Guidelines</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-700">
+            <div>
+              <h4 className="font-medium mb-2">Main Logo</h4>
+              <ul >
+                <li>• Used in header, branding, and main UI</li>
+                <li>• Recommended: 200x80px, PNG/SVG preferred</li>
+                <li>• Required for professional appearance</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-2">KRA eTIMS QR Code</h4>
+              <ul >
+                <li>• Required for Kenya tax compliance</li>
+                <li>• Must be valid QR code from KRA</li>
+                <li>• Used on receipts and invoices</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-2">Receipt Logo</h4>
+              <ul >
+                <li>• Displayed on receipts and invoices</li>
+                <li>• Should be high contrast for printing</li>
+                <li>• Recommended: 150x60px</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-2">Favicon</h4>
+              <ul >
+                <li>• Small icon for browser tabs</li>
+                <li>• Should be simple and recognizable</li>
+                <li>• Recommended: 32x32px, ICO/PNG</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
