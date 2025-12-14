@@ -205,7 +205,7 @@ export default function IntegrationsSettings() {
 
   if (!canManage) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center py-12">
           <FaExclamationTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Denied</h2>
@@ -217,7 +217,7 @@ export default function IntegrationsSettings() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 min-h-[80vh]">
+    <div className="py-10 px-4 min-h-[80vh]">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <FaPlug className="text-blue-600 text-2xl" />

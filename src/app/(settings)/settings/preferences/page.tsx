@@ -129,7 +129,7 @@ export default function PreferencesSettings() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 min-h-[80vh]">
+    <div className="py-10 px-4 min-h-[80vh]">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <FaCogs className="text-blue-600 text-2xl" />

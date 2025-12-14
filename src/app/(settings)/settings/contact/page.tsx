@@ -33,7 +33,7 @@ export default function ContactPage() {
 
   if (submitted) {
     return (
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
           <FaPaperPlane className="w-12 h-12 text-green-600 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-green-800 mb-2">Message Sent Successfully!</h2>
@@ -52,7 +52,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Contact Admin</h1>
         <p className="text-gray-600">Get in touch with our support team</p>
