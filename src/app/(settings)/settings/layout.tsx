@@ -20,7 +20,6 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
       <main style={{
         flex: 1,
         padding: '2.5rem 2rem',
-        maxWidth: 900,
         margin: '0 auto',
         background: 'none',
         borderRadius: 0,
