@@ -218,7 +218,7 @@ export default function BillingCards() {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg p-6 space-y-8">
+    <div className="bg-white rounded-xl shadow-lg p-6 space-y-8">
       <h2 className="text-2xl font-bold mb-4">Saved Cards</h2>
       <div className="border-b pb-4 mb-4">
         {loading ? (
