@@ -2,14 +2,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useBilling } from '@/hooks/useBilling';
 import BillingPlans, { BillingPlan } from './BillingPlans';
-import PaymentMethodForm from './PaymentMethodForm';
 import { apiGet } from '@/utils/api';
 import { FaChartLine, FaCreditCard, FaReceipt, FaDollarSign, FaUsers } from 'react-icons/fa';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 
 // Initialize Stripe
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+import SaveCard from '../app/(settings)/settings/billing/save-card';
 
 interface PaymentAnalytics {
   period: string;
@@ -196,7 +193,7 @@ export default function BillingDashboard({  }: BillingDashboardProps) {
             <div className="space-y-6">
               {/* Key Metrics */}
               <div className="mb-8">
-                {typedBillingData?.subscription && (
+                {typedBillingData?.subscription ? (
                   <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">Current Subscription</h3>
                     <div className="flex flex-col md:flex-row md:items-center md:space-x-6">
@@ -211,8 +208,64 @@ export default function BillingDashboard({  }: BillingDashboardProps) {
                       </div>
                     </div>
                   </div>
+                ) : (
+                  <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <FaCreditCard className="h-5 w-5 text-yellow-400" />
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-yellow-700">
+                          You do not have an active subscription.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 )}
-                {Array.isArray(typedBillingData?.subscription?.history) && typedBillingData.subscription.history.length > 0 && (
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl shadow-sm border p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Total Revenue</h3>
+                    <FaDollarSign className="w-5 h-5 text-green-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {formatCurrency(analytics.totalRevenue, analytics.currency)}
+                  </p>
+                  <p className="text-sm text-gray-600">This {period}</p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm border p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Payments</h3>
+                    <FaCreditCard className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-900">{analytics.paymentCount}</p>
+                  <p className="text-sm text-gray-600">Total payments</p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm border p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Average Payment</h3>
+                    <FaChartLine className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {formatCurrency(analytics.averagePayment, analytics.currency)}
+                  </p>
+                  <p className="text-sm text-gray-600">Per transaction</p>
+                </div>
+
+                <div className="bg-white rounded-xl shadow-sm border p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800">Payment Methods</h3>
+                    <FaUsers className="w-5 h-5 text-orange-600" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-900">{analytics.paymentMethods.length}</p>
+                  <p className="text-sm text-gray-600">Different methods</p>
+                </div>
+              </div>
+              <div className='mb-8'>
+                {(Array.isArray(typedBillingData?.subscription?.history) && typedBillingData.subscription.history.length > 0) ? (
                   <div className="bg-white rounded-xl shadow-sm border p-6">
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">Subscription History</h3>
                     <ul className="divide-y divide-gray-200">
@@ -225,50 +278,17 @@ export default function BillingDashboard({  }: BillingDashboardProps) {
                       ))}
                     </ul>
                   </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <FaReceipt className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">No subscriptions yet</h3>
+                    <p className="mt-1 text-sm text-gray-500">Your subscription history will appear here.</p>
+                  </div>
                 )}
-              </div>
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Total Revenue</h3>
-                  <FaDollarSign className="w-5 h-5 text-green-600" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  {formatCurrency(analytics.totalRevenue, analytics.currency)}
-                </p>
-                <p className="text-sm text-gray-600">This {period}</p>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Payments</h3>
-                  <FaCreditCard className="w-5 h-5 text-blue-600" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">{analytics.paymentCount}</p>
-                <p className="text-sm text-gray-600">Total payments</p>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Average Payment</h3>
-                  <FaChartLine className="w-5 h-5 text-purple-600" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">
-                  {formatCurrency(analytics.averagePayment, analytics.currency)}
-                </p>
-                <p className="text-sm text-gray-600">Per transaction</p>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-800">Payment Methods</h3>
-                  <FaUsers className="w-5 h-5 text-orange-600" />
-                </div>
-                <p className="text-3xl font-bold text-gray-900">{analytics.paymentMethods.length}</p>
-                <p className="text-sm text-gray-600">Different methods</p>
               </div>
 
               {/* Payment Methods Distribution */}
-              {analytics.paymentMethods.length > 0 && (
+              {analytics.paymentMethods.length > 0 ? (
                 <div className="bg-white rounded-xl shadow-sm border p-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">Payment Methods</h3>
                   <div className="space-y-3">
@@ -289,6 +309,12 @@ export default function BillingDashboard({  }: BillingDashboardProps) {
                       </div>
                     ))}
                   </div>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <FaCreditCard className="mx-auto h-12 w-12 text-gray-400" />
+                  <h3 className="mt-2 text-sm font-medium text-gray-900">No payment methods yet</h3>
+                  <p className="mt-1 text-sm text-gray-500">Your payment methods will appear here.</p>
                 </div>
               )}
             </div>
@@ -351,18 +377,13 @@ export default function BillingDashboard({  }: BillingDashboardProps) {
       {/* Payment Methods Tab */}
       {selectedTab === 'methods' && (
         <div className="bg-white rounded-xl shadow-sm border p-6">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-800">Payment Methods</h3>
           </div>
-          <div className="max-w-md mx-auto">
-            {/* Stripe Elements Card Form */}
-            <p className="mb-4 text-gray-600 text-sm">Save your card to enable subscriptions and faster payments.</p>
-            <Elements stripe={stripePromise}>
-              <div className="mb-8">
-                <PaymentMethodForm />
+            <p className=" text-gray-600 text-sm">Save your card to enable subscriptions and faster payments.</p>
+              <div>
+                <SaveCard />
               </div>
-            </Elements>
-          </div>
         </div>
       )}
     </div>

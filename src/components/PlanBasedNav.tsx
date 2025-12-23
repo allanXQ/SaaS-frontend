@@ -10,6 +10,7 @@ import {
   FaLayerGroup, FaUpload, FaHistory, FaUsers, FaMoneyBillWave, FaFileInvoiceDollar, /* FaBuilding, */ FaBullseye
 } from 'react-icons/fa';
 import { MdOutlineInventory2, MdOutlineAnalytics, MdOutlineReport, MdOutlineSettings } from 'react-icons/md';
+import { FiUser } from 'react-icons/fi';
 import { usePathname } from 'next/navigation';
 import { hasPermission } from '@/utils/permissions';
 import { apiGet } from '@/utils/api';
@@ -144,7 +145,19 @@ export default function PlanBasedNav() {
     { name: 'Credit', href: '/credit', icon: FaCreditCard, requiredPlan: null, requiredPermission: 'view_users' },
     { name: 'Expenses', href: '/expenses', icon: FaMoneyBillWave, requiredPlan: null, requiredPermission: 'view_users' },
     { name: 'Settings', href: '/settings', icon: MdOutlineSettings, requiredPlan: null, requiredPermission: null },
-    { name: 'Billing & Subscription', href: '/account/billing', icon: FaFileInvoiceDollar, requiredPlan: null, requiredPermission: null },
+    {
+      name: 'Account',
+      href: '/account',
+      icon: FaFileInvoiceDollar,
+      requiredPlan: null,
+      requiredPermission: null,
+      subItems: [
+        { name: 'Profile', href: '/account', requiredPermission: null, icon: FiUser },
+        { name: 'Billing & Subscription', href: '/account/billing', requiredPermission: null, icon: FaCreditCard },
+        { name: 'Invoices', href: '/account/invoices', requiredPermission: null, icon: FaFileInvoiceDollar },
+        { name: 'Account Settings', href: '/account/settings', requiredPermission: null, icon: MdOutlineSettings }
+      ]
+    },
   ], []);
 
   type PlanName = 'Basic' | 'Pro' | 'Enterprise';
@@ -342,7 +355,7 @@ export default function PlanBasedNav() {
                           {item.subItems?.map((subItem) => {
                             const SubIcon = subItem.icon || FaChevronRight;
                             const isSubActive = pathname === subItem.href;
-                            const hasNested = subItem.subItems && subItem.subItems.length > 0;
+                            const hasNested = 'subItems' in subItem && subItem.subItems && subItem.subItems.length > 0;
                             const submenuKey = subItem.href || subItem.name;
                             const openNested = !!openSubmenus[submenuKey];
                             return (
@@ -455,7 +468,7 @@ export default function PlanBasedNav() {
                           {item.subItems?.map((subItem) => {
                             const isSubActive = pathname === subItem.href;
                             const SubIcon = subItem.icon || FaChevronRight;
-                            const hasNested = subItem.subItems && subItem.subItems.length > 0;
+                            const hasNested = 'subItems' in subItem && subItem.subItems && subItem.subItems.length > 0;
                             const submenuKey = subItem.href || subItem.name;
                             const open = !!openSubmenus[submenuKey];
                             return (
@@ -579,7 +592,7 @@ export default function PlanBasedNav() {
               <Tooltip content="Log out" position="right">
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center px-3 py-2 bg-red-500 text-white rounded-lg font-semibold shadow hover:bg-red-600 transition text-xs"
+                  className="w-full flex items-center justify-center px-3 py-2 bg-red-500 text-white rounded-lg font-semibold shadow hover:bg-red-600 transition text-xs ml-2"
                 >
                   <FaSignOutAlt className="w-4 h-4 flex-shrink-0" />
                 </button>

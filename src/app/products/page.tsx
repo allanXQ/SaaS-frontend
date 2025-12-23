@@ -382,7 +382,7 @@ export default function ProductsPage() {
 
   return (
     <AuthGuard>
-      <div className="max-w-screen-2xl mx-auto px-2 sm:px-4 py-2">
+      <div className="mx-auto max-w-7xl px-2 sm:px-4 py-2">
         {/* Usage Warning Banner (auto-dismiss) */}
         {isNearLimit && showUsageBanner && (
           <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
@@ -414,7 +414,7 @@ export default function ProductsPage() {
         {/* Header: Title, Branch, Actions */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2">
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            <div className="p-2 bg-blue-100 rounded-lg">
+            <div className="p-2 bg-blue-100 rounded-lg"> 
               <FaBox className="w-5 h-5 text-blue-600" />
             </div>
             <div className="min-w-0">
@@ -607,17 +607,16 @@ export default function ProductsPage() {
                   />
                 </div>
               <div>
-              </div>
-
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-0.5">Description</label>
-                <textarea
+                <input
                   name="description"
                   defaultValue={editProduct?.description || ''}
-                  rows={3}
                   className="w-full px-2 py-1.5 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 text-xs"
                 />
               </div>
+              </div>
+
 
               <div className="flex gap-2 pt-1">
                 <button

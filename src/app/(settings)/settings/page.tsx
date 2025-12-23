@@ -38,6 +38,11 @@ interface NotificationPrefs {
   inApp: boolean;
 }
 
+interface activeTab {
+  name: string;
+  plan?: 'Basic' | 'Pro' | 'Enterprise';
+}
+
 export default function SettingsPage() {
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [users, setUsers] = useState<User[]>([]);
@@ -45,7 +50,10 @@ export default function SettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('basic');
+  const [activeTab, setActiveTab] = useState<activeTab>({
+    name: 'basic',
+    plan: 'Basic',
+  });
   const [notificationPrefs, setNotificationPrefs] = useState<NotificationPrefs>({
     emailAlerts: true,
     smsAlerts: false,
@@ -250,11 +258,11 @@ export default function SettingsPage() {
             {/* Tabs */}
             <nav className="mb-4 flex flex-wrap gap-2 border-b border-gray-200 bg-white rounded-t-xl px-4 py-2 shadow-sm">
               {tabs.map((tab) => (
-                <PlanGuard key={tab.id} requiredPlan={tab.plan}>
                   <button
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => setActiveTab({ name: tab.id, plan: tab.plan })}
+                    key={tab.id}
                     className={`py-2 px-4 border-b-2 font-medium text-sm bg-white rounded-t-lg ${
-                      activeTab === tab.id
+                      activeTab.name === tab.id
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                     }`}
@@ -262,14 +270,14 @@ export default function SettingsPage() {
                     <span className="mr-2">{tab.icon}</span>
                     {tab.label}
                   </button>
-                </PlanGuard>
+                // </PlanGuard>
               ))}
             </nav>
 
             {/* Settings Sections */}
             <div className="space-y-10">
               {/* Basic Settings */}
-              {activeTab === 'basic' && (
+              {activeTab.name === 'basic' && (
                 <section className="bg-white rounded-xl shadow-sm border p-8 flex flex-col gap-8">
                   <div>
                     <div className="flex items-center gap-3 mb-6">
@@ -319,7 +327,7 @@ export default function SettingsPage() {
               )}
 
               {/* Users Tab */}
-              {activeTab === 'users' && (
+              {activeTab.name === 'users' && (
                 <PlanGuard requiredPlan="Basic">
                   <section className="bg-white rounded-xl shadow-sm border p-8 flex flex-col gap-8">
                     <div>
@@ -372,7 +380,7 @@ export default function SettingsPage() {
               )}
 
               {/* Analytics Tab */}
-              {activeTab === 'analytics' && (
+              {activeTab.name === 'analytics' && (
                 <PlanGuard requiredPlan="Pro">
                   <section className="bg-white rounded-xl shadow-sm border p-8 flex flex-col gap-8">
                     <div>
@@ -423,7 +431,7 @@ export default function SettingsPage() {
               )}
 
               {/* Enterprise Tab */}
-              {activeTab === 'enterprise' && (
+              {activeTab.name === 'enterprise' && (
                 <PlanGuard requiredPlan="Enterprise">
                   <section className="bg-white rounded-xl shadow-sm border p-8 flex flex-col gap-8">
                     <div>
@@ -481,7 +489,7 @@ export default function SettingsPage() {
               )}
 
               {/* Notifications Tab */}
-              {activeTab === 'notifications' && (
+              {activeTab.name === 'notifications' && (
                 <PlanGuard requiredPlan="Basic">
                   <section className="bg-white rounded-xl shadow-sm border p-8 flex flex-col gap-8">
                     <div>

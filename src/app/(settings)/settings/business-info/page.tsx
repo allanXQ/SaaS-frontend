@@ -290,8 +290,10 @@ export default function BusinessInfoSettings() {
     );
   }
 
+  const cardStyle = "bg-white rounded-xl shadow p-10"
+
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 min-h-[80vh]">
+    <div className="w-fit mx-auto py-10 px-4 min-h-[80vh] grid">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
           <FaBuilding className="text-blue-600 text-2xl" />
@@ -301,9 +303,9 @@ export default function BusinessInfoSettings() {
       </div>
       {success && <div className="mb-4 px-4 py-2 rounded bg-green-50 text-green-700 border border-green-200">Business info saved!</div>}
       {error && <div className="mb-4 px-4 py-2 rounded bg-red-50 text-red-700 border border-red-200">{error}</div>}
-      <form onSubmit={handleSave} className="space-y-8">
+      <form onSubmit={handleSave} className="grid grid-cols-1 xl:grid-cols-2 gap-8 width-full">
         {/* Basic Business Information */}
-        <div className="bg-white rounded-xl shadow p-10 w-full">
+        <div className={cardStyle}>
           <h3 className="text-lg font-semibold text-gray-800 mb-6">Basic Business Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             {basicFields.map(renderField)}
@@ -311,7 +313,7 @@ export default function BusinessInfoSettings() {
         </div>
 
         {/* Business Details */}
-        <div className="bg-white rounded-xl shadow p-10 w-full">
+        <div className={cardStyle}>
           <h3 className="text-lg font-semibold text-gray-800 mb-6">Business Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             {businessDetailsFields.map(renderField)}
@@ -319,7 +321,7 @@ export default function BusinessInfoSettings() {
         </div>
 
         {/* Location Information */}
-        <div className="bg-white rounded-xl shadow p-10 w-full">
+        <div className={cardStyle}>
           <h3 className="text-lg font-semibold text-gray-800 mb-6">Location Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             {locationFields.map(renderField)}
@@ -327,7 +329,7 @@ export default function BusinessInfoSettings() {
         </div>
 
         {/* Legal and Compliance */}
-        <div className="bg-white rounded-xl shadow p-10 w-full">
+        <div className={cardStyle}>
           <h3 className="text-lg font-semibold text-gray-800 mb-6">Legal and Compliance</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             {legalFields.filter(field =>
@@ -342,7 +344,7 @@ export default function BusinessInfoSettings() {
         </div>
 
         {/* Financial Settings */}
-        <div className="bg-white rounded-xl shadow p-10 w-full">
+        <div className={`${cardStyle} grid col-span-1 xl:col-span-2`}>
           <h3 className="text-lg font-semibold text-gray-800 mb-6">Financial Settings</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             {financialFields.filter(f => f.name !== 'logoUrl').map(renderField)}
@@ -356,7 +358,7 @@ export default function BusinessInfoSettings() {
           </div>
         </div>
 
-        <div className="flex justify-end">
+        <div className="">
           <button
             type="submit"
             className="px-8 py-2 rounded-lg border border-blue-200 bg-blue-600 text-white font-semibold text-base shadow hover:bg-blue-700 transition disabled:opacity-60"
