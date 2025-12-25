@@ -429,7 +429,7 @@ export default function DashboardPage() {
   if (loading || limitsLoading) {
     return (
       <div className="min-h-screen bg-gray-50 py-4 px-2 sm:px-3 lg:px-4">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto xl:max-w-5xl mr-4">
           <div className="mb-4">
             <div className="h-6 bg-gray-200 rounded w-40 mb-1"></div>
             <div className="h-3 bg-gray-200 rounded w-56"></div>
@@ -447,7 +447,7 @@ export default function DashboardPage() {
 
   return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-        <div className="max-w-5xl mx-auto px-2 sm:px-3 lg:px-4 py-4">
+        <div className="max-w-7xl mx-auto px-2 sm:px-3 lg:px-4 py-4">
           {/* Header */}
           <div className="mb-5 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div>

@@ -264,9 +264,12 @@ export default function PlanBasedNav() {
   return (
     <>
       {/* Mobile menu button */}
-      <div className={`lg:hidden relative top-2 left-4 z-50 mb-5 ${sidebarOpen && 'left-52'}`}>
+      <div className={`xl:hidden relative top-2 left-4 z-50 mb-4 ${sidebarOpen && 'left-52'}`}>
         <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => {
+            setSidebarOpen(!sidebarOpen);
+            setSidebarCollapsed(!sidebarCollapsed)
+          }}
           className="p-2 bg-white rounded-lg shadow-lg border"
         >
           {sidebarOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
@@ -275,10 +278,10 @@ export default function PlanBasedNav() {
 
       {/* Sidebar */}
       <div className={`fixed top-0 pt-5 left-0 h-full bg-white shadow-xl border-r z-30 transition-all duration-300 ease-in-out ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full xl:translate-x-0'
       } ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
         {/* Desktop collapse/expand button */}
-        <div className="hidden lg:block absolute -right-3 top-4 z-50">
+        <div className="hidden xl:block absolute -right-3 top-4 z-50">
           <Tooltip content={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"} position="right">
             <button
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -613,7 +616,7 @@ export default function PlanBasedNav() {
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-white/60 backdrop-blur-sm backdrop-opacity-5 z-20 lg:hidden"
+          className="fixed inset-0 bg-white/60 backdrop-blur-sm backdrop-opacity-5 z-20 xl:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
