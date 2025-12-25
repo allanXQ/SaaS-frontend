@@ -267,8 +267,8 @@ export default function PlanBasedNav() {
       <div className={`xl:hidden relative top-2 left-4 z-50 mb-4 ${sidebarOpen && 'left-52'}`}>
         <button
           onClick={() => {
-            setSidebarOpen(!sidebarOpen);
-            setSidebarCollapsed(!sidebarCollapsed)
+            setSidebarOpen((prev) => !prev);
+            setSidebarCollapsed(!sidebarCollapsed);
           }}
           className="p-2 bg-white rounded-lg shadow-lg border"
         >
